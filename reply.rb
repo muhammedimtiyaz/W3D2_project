@@ -3,7 +3,7 @@ require_relative 'question'
 require_relative 'user'
 require_relative 'model_base'
 
-class Reply
+class Reply < ModelBase
     attr_accessor :question_id, :body, :author_id, :parent_reply_id
     attr_reader :id
 

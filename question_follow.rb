@@ -4,7 +4,7 @@ require_relative 'question'
 require_relative 'model_base'
 
 
-class QuestionFollow
+class QuestionFollow < ModelBase
     attr_accessor :question_id, :user_id
     attr_reader :id
 

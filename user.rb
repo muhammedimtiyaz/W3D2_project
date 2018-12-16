@@ -5,7 +5,7 @@ require_relative 'question_like'
 require_relative 'reply'
 require_relative 'model_base'
 
-class User
+class User < ModelBase
     attr_accessor :fname, :lname
     attr_reader :id
 
