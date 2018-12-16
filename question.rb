@@ -36,6 +36,14 @@ class Question
         results.map { |result| Question.new(result) }
     end
 
+    def self.most_followed(n)
+        QuestionFollow.most_followed_questions(n)
+    end
+
+    def self.most_liked(n)
+        QuestionLike.most_liked_questions(n)
+    end
+
     def initialize(option)
         @id  = option['id']
         @title = option['title']
@@ -55,5 +63,35 @@ class Question
         QuestionFollow.followers_for_question_id(self.id)
     end
 
-    
+    def likers
+        QuestionLike.likers_for_question_id(id)
+    end
+
+    def num_likes
+        QuestionLike.num_likes_for_question_id(id)
+    end
+
+    def save
+        if self.id
+            QuestionsDBConnection.instance.execute(<<-SQL, title: title, body: body, author_id: author_id, id: self.id)
+            UPDATE
+                questions
+            SET
+                title = :title, body = :body, author_id = :author_id
+            WHERE
+                id = :id
+            SQL
+        else
+            QuestionsDBConnection.instance.execute(<<-SQL, title: title, body: body, author_id: author_id)
+            INSERT INTO
+                questions(title, body, author_id)
+            VALUES
+                (:title, :body, :author_id)
+            SQL
+
+            self.id = QuestionsDBConnection.last_insert_row_id
+        end
+
+        self
+    end    
 end
