@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS question_follows;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS users;
 
-PRAGMA foreign_keys = ON
+PRAGMA foreign_keys = ON;
 
 
 CREATE TABLE users (
@@ -31,23 +31,35 @@ CREATE TABLE questions (
 
 INSERT INTO
   questions (title, body, author_id)
-VALUES
-  ("Ned Question", "NED NED NED", 1);
-
-INSERT INTO
-  questions (title, body, author_id)
-VALUES
-  ("Kush Question", "KUSH KUSH KUSH", 2);
+SELECT
+  "Ned Question", "NED NED NED", 1
+FROM
+  users
+WHERE
+  users.fname = "Ned" AND users.lname = "Ruggeri";
 
 INSERT INTO
   questions (title, body, author_id)
 SELECT
-  ("Earl Question", "MEOW MEOW MEOW", 3);
+  "Kush Question", "KUSH KUSH KUSH", users.id
+FROM
+  users
+WHERE
+  users.fname = "Kush" AND users.lname = "Patel";
+
+INSERT INTO
+  questions (title, body, author_id)
+SELECT
+  "Earl Question", "MEOW MEOW MEOW", users.id
+FROM
+  users
+WHERE
+  users.fname = "Earl" AND users.lname = "Cat";
 
 
 CREATE TABLE question_follows (
     id INTEGER PRIMARY KEY,
-    author_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     question_id INTEGER NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES users(id),
